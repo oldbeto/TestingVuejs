@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TestingVuejs.Models;
 
 namespace TestingVuejs.Controllers
 {
@@ -10,21 +11,24 @@ namespace TestingVuejs.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
+            Pessoa pessoa = new Pessoa()
+            {
+                Nome = "Roberto",
+                Idade = 14,
+                Cursos = new string[]
+                {"HTML",
+                "CSS",
+                "JQuery",
+                "Bootstrap",
+                "Vue",
+                "Vuetify",
+                "Angular",
+                "MongoDB",
+                "GraphSQL",
+                "Node" },
+            };
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(pessoa);
         }
     }
 }

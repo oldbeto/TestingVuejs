@@ -1,31 +1,73 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿@using TestingVuejs.Models
+@model TestingVuejs.Models.Pessoa
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+<body>
+    <div id="app">
+        <div class="header">
+            <h1>Funcionarios</h1>
+            <button v-if="state === 'default'" class="btn btn-primary" v-on:click="mudarEstado('edit')">Adicionar Item</button>
+            <button v-else="state === 'edit'" class="btn btn-danger" v-on:click="mudarEstado('default')">Cancelar</button>
+        </div>
+        <div v-if="state === 'edit'" class="add-item-form">
+            <input type="text" v-model="novoItem" placeholder="Adicione uma disciplina:" v-on:keyup.enter="salvarItem" />
+            <button class="btn btn-primary" v-bind:disabled="novoItem.length === 0" v-on:click="salvarItem">Salvar</button>
+        </div>
+        <ul>
+            <li v-for="item in inverteItens" :class="{strikeout: item.Velho}" v-on:click="tornarVelho(item)">{{item.Nome}}</li>
+        </ul>
+        <p v-if="items.length === 0">Não há itens na lista!</p>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script>
+        var Vue = new Vue({
+            el: "#app",
+            data: {
+                teste: "Aula de Vue.js",
+                novoItem: "",
+                state: "default",
+                items: [
+                    {
+                        Nome: "Roberto Ehlert",
+                        Velho: false,
+                        Prioridade: true,
+                    },
+                    {
+                        Nome: "Ogushi Desuka ",
+                        Velho: true,
+                        Prioridade: true,
+                    },
+                    {
+                        Nome: "Andre Jiraya Nippon ",
+                        Velho: false,
+                        Prioridade: false,
+                    },
+                ]
+            },
+            computed: {
+                inverteItens() {
+                    return this.items.reverse();
+                }
+            },        
+
+            methods: {
+                salvarItem: function (novoItem) {
+                    this.items.push({
+                        Nome: this.novoItem,
+                        Velho: false,
+                        Prioridade: false,
+                    });
+                    this.novoItem = '';
+                },
+                mudarEstado: function (estado) {
+                    this.state = estado;
+                },
+                tornarVelho: function (item) {
+                    item.Velho = !item.Velho;
+                }
+            }
+            })
+    </script>
+</body>
+
